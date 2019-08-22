@@ -1,4 +1,8 @@
 <?php
+if(!in_array($_SERVER['REMOTE_ADDR'], array($myip, $serverip) || !$user->hasRole("superuser"){
+	$session->redirect("/");
+	die();
+}
 $video_id = "UC0V6NsKvhBVDJh0jzNoAf3w";
 if($video_id){
 
