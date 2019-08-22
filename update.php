@@ -5,6 +5,8 @@ if($video_id){
 	$xml = "https://www.youtube.com/feeds/videos.xml?channel_id={$video_id}";
 	$xml = simplexml_load_file($xml);
 
+	$parent = $pages->get("template=videos");
+
 	foreach ($xml->entry as $feed) {
 
 		// Video's information
@@ -21,7 +23,7 @@ if($video_id){
 			$file = "https://i1.ytimg.com/vi/". $id ."/mqdefault.jpg";
 			$t = new Page();
 			$t->template = $templates->get('video');
-			$t->parent = $video_page;
+			$t->parent = $parent->id;
 			$t->title = $feed->title;
 			$t->video = $id;
 			$t->date = $date;
