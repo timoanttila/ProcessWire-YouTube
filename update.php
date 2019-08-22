@@ -1,5 +1,5 @@
 <?php
-if(!in_array($_SERVER['REMOTE_ADDR'], array($myip, $serverip) || !$user->hasRole("superuser"){
+if(!in_array($_SERVER['REMOTE_ADDR'], array($myip, $serverip)) || !$user->hasRole("superuser"){
 	$session->redirect("/");
 	die();
 }
