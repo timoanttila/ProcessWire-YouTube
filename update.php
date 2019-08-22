@@ -13,8 +13,7 @@ if($video_id){
 		$id = $title = $date = $check = "";
 		$id = substr($feed->id, 9);
 		$title = (string)$feed->title;
-		$date = strtotime($feed->published);
-		$date = date('d.m.Y', $date);
+		$date = date('d.m.Y', strtotime($feed->published));
 
 		// Check if the video exists
 		$check = $pages->get("template=video, video={$id}");
