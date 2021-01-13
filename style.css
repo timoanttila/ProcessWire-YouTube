@@ -1,0 +1,30 @@
+#videos {
+	display: grid;
+	grid-gap: 1.5rem;
+}
+
+#videos a { color: #000 }
+
+#videos img { width: 100% }
+
+@media screen and (min-width:500px){
+	#videos {
+		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+	}
+}
+
+.video {
+    position: relative;
+    padding-bottom: 56.25%;
+    max-width: 100%
+}
+
+.video iframe,
+.video video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none
+}
