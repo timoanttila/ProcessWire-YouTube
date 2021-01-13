@@ -1,29 +1,33 @@
 <?php
-if($temp == "videos"){
-	$id = $page->child->video;
-	$item = $page->children("id!={$page->child->id}");
+if($page->template == "videos"){
+	$parent = $page;
+	$video = $page->child->video;
 } else {
-	$id = $page->video;
-	$item = $page->parent->children("id!={$page->id}");
+	$parent = $page->parent;
+	$video = $page->video;
 }
 
-// Featured video
-echo "<div class='video mb-5'><iframe src='https://www.youtube-nocookie.com/embed/{$id}' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div>";
+// Featured Big
+$c .= "<div id='video' class='video my-5'><iframe src='https://www.youtube-nocookie.com/embed/". $main->video ."?rel=0' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div>";
 
 // Other videos
-if($item->first->id){
-	echo "<div class='row'>";
-	foreach($item as $item){
-		if(!$item->img->first) {
-			$file = "https://i1.ytimg.com/vi/". $item->video ."/mqdefault.jpg";
-			$headers = @get_headers($file);
-			if(strpos($headers[0],'404') === false){
-				$item->of(false);
-				$item->img->add($file);
-				$item->save();
-			}
+$c .= "<div id='videos' class='grid'>";
+foreach($parent->children("template=video, id!=". $main->id) as $item){
+
+	// If image does not exist
+	if(!$item->img->first){
+		$file = "https://i1.ytimg.com/vi/". $item->video ."/mqdefault.jpg";
+		if(@GetImageSize($file)){
+			$item->of(false);
+			$item->img->add($file);
+			$item->save();
 		}
-		echo "<a class='col-4 r12 r7 mb-4 text-black' href='$item->url' title='YouTube: $item->title ($item->pubdate)'><figure>". img($item->img->first,$item->title) ."<figcaption><h2 class='mb-0 mt-3'>$item->title</h2><div class='pubdate'>$item->pubdate</div></figcaption></figure></a>";
 	}
-	echo "</div>";
+
+	// Create link
+	$c .= "<a class='block' href='$item->url'>". img($item->img->first,$item->title) ."<div class='videoTitle'>$item->title</div><div class='pubdate'>". date("d.m.Y", $item->post_date) ."</div></a>";
 }
+$c .= "</div>";
+
+// Render
+echo $c;
